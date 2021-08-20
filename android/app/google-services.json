@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "538470220071",
+    "project_id": "quizoid-7a9e0",
+    "storage_bucket": "quizoid-7a9e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538470220071:android:58e3e8e8f0f3a35eb66902",
+        "android_client_info": {
+          "package_name": "com.example.quizoid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538470220071-11vgpvr60c4k0emjt656u95c2nnm88be.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaugS6sp6JlqsFZyxJ5l6_yADBjc-tEEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538470220071-11vgpvr60c4k0emjt656u95c2nnm88be.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
