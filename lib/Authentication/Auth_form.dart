@@ -47,7 +47,7 @@ class _AuthFormState extends State<AuthForm> {
       widget._submitAuthForm(
         ctx:context,
         email: _emailId,
-        password : _password,
+        password : _password,  
         phnNo: _phnNo,
         userName: _userName,
       );

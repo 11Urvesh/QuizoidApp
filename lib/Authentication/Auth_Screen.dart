@@ -97,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
      final mediaQuery = MediaQuery.of(context);
      bool _keyboardIsOpen = mediaQuery.viewInsets.bottom != 0;
 
-     double _screenHeight = mediaQuery.size.height -
+    double _screenHeight = mediaQuery.size.height -
         mediaQuery.padding.top -
         mediaQuery.padding.bottom;
     double _screenWidth = mediaQuery.size.width -
@@ -186,10 +186,3 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
-
-/*
-Image.asset( 
-                          'assets/Images/Agrawal-image.png', 
-                          fit: BoxFit.contain,
-                        )
-*/
