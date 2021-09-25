@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:quizoid/aboutUs.dart';
+import 'package:quizoid/Main-Drawer/aboutUs.dart';
 import 'help.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'userProfile.dart';
