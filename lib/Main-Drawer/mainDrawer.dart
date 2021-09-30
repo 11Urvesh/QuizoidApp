@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quizoid/Main-Drawer/aboutUs.dart';
-import 'help.dart';
+import 'package:quizoid/help.dart';
+import 'myQuizoid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'userProfile.dart';
 
@@ -10,8 +11,8 @@ class MainDrawer extends StatefulWidget {
   final String userEmail;
   final String userName;
   final String userphnNo;
-
-  MainDrawer(this.userId,this.userEmail,this.userName,this.userphnNo);
+  final List quizByMe;
+  MainDrawer(this.userId,this.userEmail,this.userName,this.userphnNo,this.quizByMe);
  
   @override
   _MainDrawerState createState() => _MainDrawerState();
@@ -60,9 +61,13 @@ class _MainDrawerState extends State<MainDrawer> {
       Navigator.of(context)
         .push(MaterialPageRoute(builder: (context)=>WebViewContainer('https://sith.co.in/','About Us')));//MenuScreen(title)));
     }
+    else if(title == 'My Quizoid'){
+      Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context)=>MyQuizoid(title,widget.quizByMe)));
+    }
     else{
       Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context)=>MenuScreen(title)));
+        .push(MaterialPageRoute(builder: (context)=>Help(title)));
     } 
   }
 
@@ -122,7 +127,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   ),
                 ),
                 buildListTile(constraints,'Profile',Icons.settings),
-                buildListTile(constraints,'Settings',Icons.settings),
+                buildListTile(constraints,'My Quizoid',Icons.list_alt),
                 buildListTile(constraints,'About Us',Icons.info),
                 buildListTile(constraints,'Help',Icons.help),
                 buildListTile(constraints,'Logout',Icons.logout),

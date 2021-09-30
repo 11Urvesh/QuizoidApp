@@ -50,7 +50,8 @@ class _AuthScreenState extends State<AuthScreen> {
           'Image':null,
           'Standard':null,
           'School': null,
-          'About':null
+          'About':null,
+          'QuizByMe': FieldValue.arrayUnion([])
         });
       }
 

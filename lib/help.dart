@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MenuScreen extends StatelessWidget {
+class Help extends StatelessWidget {
   final String title;
-
-  MenuScreen(this.title);
+  Help(this.title);
 
   @override
   Widget build(BuildContext context) {
