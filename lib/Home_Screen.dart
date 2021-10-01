@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
           appBar: appBar,
           drawer: MainDrawer(userId, snapShot.data['Email'],
-              snapShot.data['Name'], snapShot.data['phnNo'],snapShot.data['QuizByMe']),
+              snapShot.data['Name'], snapShot.data['phnNo']),
           body: Container(
               height: bodyHeight,
               width: bodyWidth,

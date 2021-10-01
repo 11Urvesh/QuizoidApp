@@ -11,8 +11,7 @@ class MainDrawer extends StatefulWidget {
   final String userEmail;
   final String userName;
   final String userphnNo;
-  final List quizByMe;
-  MainDrawer(this.userId,this.userEmail,this.userName,this.userphnNo,this.quizByMe);
+  MainDrawer(this.userId,this.userEmail,this.userName,this.userphnNo);
  
   @override
   _MainDrawerState createState() => _MainDrawerState();
@@ -59,11 +58,11 @@ class _MainDrawerState extends State<MainDrawer> {
     }
     else if(title=='About Us'){
       Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context)=>WebViewContainer('https://sith.co.in/','About Us')));//MenuScreen(title)));
+        .push(MaterialPageRoute(builder: (context)=>WebViewContainer('https://sith.co.in/','About Us')));
     }
     else if(title == 'My Quizoid'){
       Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context)=>MyQuizoid(title,widget.quizByMe)));
+        .push(MaterialPageRoute(builder: (context)=>MyQuizoid(title,widget.userId)));
     }
     else{
       Navigator.of(context)

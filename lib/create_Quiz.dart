@@ -83,7 +83,8 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
             'QuizTitle': '$quizTitle',
             'QuestionList': FieldValue.arrayUnion(questions),
             'OptionList': FieldValue.arrayUnion(options),
-            'AnswerList': FieldValue.arrayUnion(answers)
+            'AnswerList': FieldValue.arrayUnion(answers),
+            'AttemptedBy':[]
          });
          await FirebaseFirestore.instance.collection('Users').doc(widget.userId).update({
            'QuizByMe': FieldValue.arrayUnion([doc.id.toString()])
