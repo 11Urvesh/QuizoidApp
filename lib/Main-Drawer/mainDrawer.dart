@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quizoid/Main-Drawer/aboutUs.dart';
-import 'package:quizoid/help.dart';
+import 'package:quizoid/Main-Drawer/help.dart';
 import 'myQuizoid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'userProfile.dart';

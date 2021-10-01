@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:quizoid/tempData.dart';
+import 'package:quizoid/CreateQuiz/tempData.dart';
 
 class QuestionModel extends StatefulWidget {
   @override

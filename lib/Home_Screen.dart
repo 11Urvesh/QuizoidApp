@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizoid/Main-Drawer/mainDrawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quizoid/create_Quiz.dart';
+import 'package:quizoid/CreateQuiz/create_Quiz.dart';
 
 class HomeScreen extends StatelessWidget {
   final String userId;

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quizoid/QuestionForm.dart';
-import 'package:quizoid/Questions.dart';
-import 'package:quizoid/ShareQuizCode.dart';
-import 'package:quizoid/tempData.dart';
+import 'package:quizoid/CreateQuiz/QuestionForm.dart';
+import 'package:quizoid/CreateQuiz/Questions.dart';
+import 'package:quizoid/CreateQuiz/ShareQuizCode.dart';
+import 'package:quizoid/CreateQuiz/tempData.dart';
 import 'package:intl/intl.dart';
 
 

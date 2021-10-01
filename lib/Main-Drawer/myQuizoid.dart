@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quizoid/AttemptedByUsers.dart';
+import 'package:quizoid/Main-Drawer/AttemptedByUsers.dart';
 
 class MyQuizoid extends StatelessWidget {
   final String title;
