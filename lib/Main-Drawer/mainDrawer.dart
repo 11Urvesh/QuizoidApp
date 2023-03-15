@@ -6,72 +6,68 @@ import 'myQuizoid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'userProfile.dart';
 
-class MainDrawer extends StatefulWidget { 
+class MainDrawer extends StatefulWidget {
   final String userId;
   final String userEmail;
   final String userName;
   final String userphnNo;
-  MainDrawer(this.userId,this.userEmail,this.userName,this.userphnNo);
- 
+  MainDrawer(this.userId, this.userEmail, this.userName, this.userphnNo);
+
   @override
   _MainDrawerState createState() => _MainDrawerState();
 }
 
 class _MainDrawerState extends State<MainDrawer> {
-
   void openMenu(BuildContext context, String title) {
-
-    if(title == 'Logout')
-    {
+    if (title == 'Logout') {
       showDialog(
-        context: context,
-        barrierDismissible: false,
-        useSafeArea: true,
-        builder: (_)=>AlertDialog(
-          title: Text('SignOut'),
-          content: Text('Are you sure want to SignOut ?'),
-          elevation: 20,
-          semanticLabel: 'SignOut',
-          actions: [
-            FlatButton(
-              child: Text('No'),
-              onPressed: (){
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              }
-            ),
-            FlatButton(
-              child: Text('Yes'),
-              onPressed: (){
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                FirebaseAuth.instance.signOut();
-              }
-            )
-          ],
-        )
-      );
-    }
-    else if(title=='Profile'){
+          context: context,
+          barrierDismissible: false,
+          useSafeArea: true,
+          builder: (_) => AlertDialog(
+                title: Text('SignOut'),
+                content: Text('Are you sure want to SignOut ?'),
+                elevation: 20,
+                semanticLabel: 'SignOut',
+                actions: [
+                  ElevatedButton(
+                      child: Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      }),
+                  ElevatedButton(
+                      child: Text('Yes'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        FirebaseAuth.instance.signOut();
+                      })
+                ],
+              ));
+    } else if (title == 'Profile') {
       Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ProfileScreen(title,widget.userId,widget.userEmail,widget.userName,widget.userphnNo))).then((value){setState(() {});});
-    }
-    else if(title=='About Us'){
+          .push(MaterialPageRoute(
+              builder: (context) => ProfileScreen(title, widget.userId,
+                  widget.userEmail, widget.userName, widget.userphnNo)))
+          .then((value) {
+        setState(() {});
+      });
+    } else if (title == 'About Us') {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              WebViewContainer('https://sith.co.in/', 'About Us')));
+    } else if (title == 'My Quizoid') {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MyQuizoid(title, widget.userId)));
+    } else {
       Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context)=>WebViewContainer('https://sith.co.in/','About Us')));
+          .push(MaterialPageRoute(builder: (context) => Help(title)));
     }
-    else if(title == 'My Quizoid'){
-      Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context)=>MyQuizoid(title,widget.userId)));
-    }
-    else{
-      Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context)=>Help(title)));
-    } 
   }
 
-
-  Widget buildListTile(BoxConstraints constraints,String title,IconData icon) {
+  Widget buildListTile(
+      BoxConstraints constraints, String title, IconData icon) {
     return Container(
         height: constraints.maxHeight * 0.08,
         width: constraints.maxWidth,
@@ -82,8 +78,7 @@ class _MainDrawerState extends State<MainDrawer> {
                 child: Icon(
                   icon,
                   size: 30,
-                )
-              ),
+                )),
             title: Container(
                 width: constraints.maxWidth * 0.6,
                 child: Text(
@@ -111,25 +106,33 @@ class _MainDrawerState extends State<MainDrawer> {
                   height: constraints.maxHeight * 0.25,
                   width: constraints.maxWidth,
                   child: UserAccountsDrawerHeader(
-                    onDetailsPressed:()=>openMenu(context,'Profile'),  
-                    accountName: Text('${widget.userName}'),
-                    accountEmail: Text(widget.userEmail),
-                    currentAccountPicture: FutureBuilder(
-                      future: FirebaseFirestore.instance.collection('Users').doc(widget.userId).get(),
-                      builder: (context,snapShot){
-                        if (snapShot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        return CircleAvatar(maxRadius: constraints.maxHeight * 0.075,backgroundImage:snapShot.data['Image'] != null ?NetworkImage(snapShot.data['Image']): AssetImage('assets/Images/userNull_image.jpg'));
-                      },
-                    )
-                  ),
+                      onDetailsPressed: () => openMenu(context, 'Profile'),
+                      accountName: Text('${widget.userName}'),
+                      accountEmail: Text(widget.userEmail),
+                      currentAccountPicture: FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(widget.userId)
+                            .get(),
+                        builder: (context, snapShot) {
+                          if (snapShot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return CircleAvatar(
+                              maxRadius: constraints.maxHeight * 0.075,
+                              backgroundImage: snapShot.data['Image'] != null
+                                  ? NetworkImage(snapShot.data['Image'])
+                                  : AssetImage(
+                                      'assets/Images/userNull_image.jpg'));
+                        },
+                      )),
                 ),
-                buildListTile(constraints,'Profile',Icons.settings),
-                buildListTile(constraints,'My Quizoid',Icons.list_alt),
-                buildListTile(constraints,'About Us',Icons.info),
-                buildListTile(constraints,'Help',Icons.help),
-                buildListTile(constraints,'Logout',Icons.logout),
+                buildListTile(constraints, 'Profile', Icons.settings),
+                buildListTile(constraints, 'My Quizoid', Icons.list_alt),
+                buildListTile(constraints, 'About Us', Icons.info),
+                buildListTile(constraints, 'Help', Icons.help),
+                buildListTile(constraints, 'Logout', Icons.logout),
               ],
             );
           }),

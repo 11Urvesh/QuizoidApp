@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 class AuthForm extends StatefulWidget {
-  
   final bool _isLogin;
   final bool _isLoding;
 
@@ -14,7 +13,7 @@ class AuthForm extends StatefulWidget {
     String phnNo,
   }) _submitAuthForm;
 
-  AuthForm(this._isLogin,this._submitAuthForm,this._isLoding);
+  AuthForm(this._isLogin, this._submitAuthForm, this._isLoding);
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -30,35 +29,32 @@ class _AuthFormState extends State<AuthForm> {
   String _emailId;
   String _password;
 
-
   @override
   void initState() {
     super.initState();
     _passwordVisible = false;
   }
 
-  void _trySubmit(BuildContext context)
-  {
+  void _trySubmit(BuildContext context) {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
 
     if (isValid) {
       _formKey.currentState.save();
       widget._submitAuthForm(
-        ctx:context,
+        ctx: context,
         email: _emailId,
-        password : _password,  
+        password: _password,
         phnNo: _phnNo,
         userName: _userName,
       );
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
-      isAlwaysShown: ! widget._isLogin,
+      isAlwaysShown: !widget._isLogin,
       controller: _controllerOne,
       child: SingleChildScrollView(
         controller: _controllerOne,
@@ -67,54 +63,54 @@ class _AuthFormState extends State<AuthForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if(!widget._isLogin)
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    key: ValueKey('Name'),
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      hintText: 'Enter Full Name',
-                      border: OutlineInputBorder(),
+                if (!widget._isLogin)
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    padding: const EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      key: ValueKey('Name'),
+                      decoration: InputDecoration(
+                        labelText: 'Name',
+                        hintText: 'Enter Full Name',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.text,
+                      validator: (value) => value.isEmpty
+                          ? 'Please enter your name'
+                          : (RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]')
+                                  .hasMatch(value))
+                              ? 'Invalid name'
+                              : null,
+                      onSaved: (value) {
+                        _userName = value.trim();
+                      },
                     ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) => value.isEmpty
-                        ? 'Please enter your name'
-                        : (RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]')
-                                .hasMatch(value))
-                            ? 'Invalid name'
-                            : null,
-                    onSaved: (value) {
-                      _userName = value.trim();
-                    },
                   ),
-                ),
-                if(!widget._isLogin)
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    key: ValueKey('Mobile Number'),
-                    decoration: InputDecoration(
-                      labelText: 'Phone.No',
-                      hintText: 'Enter your mobile number',
-                      prefixText: '+91',
-                      border: OutlineInputBorder(),
+                if (!widget._isLogin)
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    padding: const EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      key: ValueKey('Mobile Number'),
+                      decoration: InputDecoration(
+                        labelText: 'Phone.No',
+                        hintText: 'Enter your mobile number',
+                        prefixText: '+91',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) => (!RegExp(r'(^(?:[+0]9)?[0-9]{10}$)')
+                                  .hasMatch(value) ||
+                              value.length == 0)
+                          ? 'Invalid phone number'
+                          : null,
+                      keyboardType: TextInputType.phone,
+                      onSaved: (value) {
+                        _phnNo = value.trim();
+                      },
                     ),
-                    validator: (value) =>
-                        (!RegExp(r'(^(?:[+0]9)?[0-9]{10}$)').hasMatch(value) ||
-                                value.length == 0)
-                            ? 'Invalid phone number'
-                            : null,
-                    keyboardType: TextInputType.phone,
-                    onSaved: (value) {
-                      _phnNo = value.trim();
-                    },
                   ),
-                ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.1,
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -144,7 +140,9 @@ class _AuthFormState extends State<AuthForm> {
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      hintText: (widget._isLogin ? 'Enter your password' : 'Set Password'),
+                      hintText: (widget._isLogin
+                          ? 'Enter your password'
+                          : 'Set Password'),
                       border: OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -164,29 +162,27 @@ class _AuthFormState extends State<AuthForm> {
                           ? 'Password must be at least 7 characters long.'
                           : null;
                     },
-                    onSaved: (value){
-                      _password= value.trim();
+                    onSaved: (value) {
+                      _password = value.trim();
                     },
                     keyboardType: TextInputType.visiblePassword,
                   ),
                 ),
-                if(widget._isLoding)
-                CircularProgressIndicator(),
-                if(!widget._isLoding)
-                Container(
-                    alignment: Alignment.center,
-                    child: FlatButton(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      minWidth: MediaQuery.of(context).size.width * 0.25,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.025),
-                      ),
-                      child: Text(widget._isLogin ? 'Login ':'Sign Up',
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: ()=>_trySubmit(context),
-                      color: Theme.of(context).primaryColor,
-                    )
-                )
+                if (widget._isLoding) CircularProgressIndicator(),
+                if (!widget._isLoding)
+                  Container(
+                      alignment: Alignment.center,
+                      child: TextButton(
+                        // height: MediaQuery.of(context).size.height * 0.05,
+                        //minWidth: MediaQuery.of(context).size.width * 0.25,
+                        //shape: RoundedRectangleBorder(
+                        //borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.025),
+                        //),
+                        child: Text(widget._isLogin ? 'Login ' : 'Sign Up',
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () => _trySubmit(context),
+                        //color: Theme.of(context).primaryColor,
+                      ))
               ],
             )),
       ),

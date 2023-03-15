@@ -14,7 +14,8 @@ class ProfileScreen extends StatefulWidget {
   String _std;
   String _about;
 
-  ProfileScreen(this._menu, this._userId, this._userEmail, this._userName,this._userphnNo);
+  ProfileScreen(this._menu, this._userId, this._userEmail, this._userName,
+      this._userphnNo);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -34,16 +35,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void updateEdits(BuildContext _context) async {
-
     SnackBar mySnackbar = SnackBar(
       duration: Duration(seconds: 20),
-      content: Text('Updating...Please Wait!',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      content: Text('Updating...Please Wait!',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       backgroundColor: Theme.of(context).primaryColor,
     );
-    Scaffold.of(_context).showSnackBar(mySnackbar);
+    ScaffoldMessenger.of(_context).showSnackBar(mySnackbar);
     try {
       if (_pickedImage != null) {
-        final ref = FirebaseStorage.instance.ref().child('User_Images').child(widget._userId + 'jpg');
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('User_Images')
+            .child(widget._userId + 'jpg');
         await ref.putFile(_pickedImage).whenComplete(() => null);
         final img_url = await ref.getDownloadURL();
         await FirebaseFirestore.instance
@@ -69,8 +73,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             .doc(widget._userId)
             .update({'About': widget._about});
       }
-    } catch(err){
-      Scaffold.of(_context).showSnackBar(SnackBar(content: Text('$err',style: TextStyle(color:Colors.white),),backgroundColor: Colors.red,));
+    } catch (err) {
+      ScaffoldMessenger.of(_context).showSnackBar(SnackBar(
+        content: Text(
+          '$err',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -85,13 +95,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    FlatButton(
+                    ElevatedButton(
                         child: Text('Take New Photo'),
                         onPressed: () {
                           _source = ImageSource.camera;
                           Navigator.of(context).pop();
                         }),
-                    FlatButton(
+                    ElevatedButton(
                         child: Text('Choose Existing Photo'),
                         onPressed: () {
                           _source = ImageSource.gallery;
@@ -118,20 +128,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: Text(widget._menu),
       centerTitle: true,
       actions: [
-        Builder(
-          builder: (context){
-            return Visibility(
-              visible: ((widget._school != null || widget._std != null) || (widget._about != null || _pickedImage != null)) ? true : false ,
-              child: TextButton(
+        Builder(builder: (context) {
+          return Visibility(
+            visible: ((widget._school != null || widget._std != null) ||
+                    (widget._about != null || _pickedImage != null))
+                ? true
+                : false,
+            child: TextButton(
                 child: Text(
                   'Save',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () => updateEdits(context)
-              ),
-            ); 
-          }
-        )
+                onPressed: () => updateEdits(context)),
+          );
+        })
       ],
     );
 
@@ -154,7 +164,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Stack(
               children: [
                 FutureBuilder(
-                  future: FirebaseFirestore.instance.collection('Users').doc(widget._userId).get(),
+                  future: FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(widget._userId)
+                      .get(),
                   builder: (context, snapShot) {
                     if (snapShot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -202,126 +215,136 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white.withOpacity(0.5),
                           height: constraints.maxHeight * 0.08,
                           child: ListTile(
-                            leading: Text(
-                              'Standard:',
-                              style: TextStyle(color: Theme.of(context).primaryColor,fontWeight:FontWeight.bold)
-                            ),
-                            title: widget._std != null
-                                ? Text(widget._std)
-                                : (snapShot.data['Standard'] != null ? Text(snapShot.data['Standard']): Text('eg. 11 science',style: TextStyle(color:Colors.grey))),                         
-                            trailing: IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                String input; 
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          title: Text('Standard'),
-                                          content: TextFormField(
-                                            decoration: InputDecoration(
-                                              hintText: 'Enter your Standard',
+                              leading: Text('Standard:',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold)),
+                              title: widget._std != null
+                                  ? Text(widget._std)
+                                  : (snapShot.data['Standard'] != null
+                                      ? Text(snapShot.data['Standard'])
+                                      : Text('eg. 11 science',
+                                          style:
+                                              TextStyle(color: Colors.grey))),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  String input;
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                            title: Text('Standard'),
+                                            content: TextFormField(
+                                              decoration: InputDecoration(
+                                                hintText: 'Enter your Standard',
+                                              ),
+                                              onChanged: (value) {
+                                                input = value;
+                                              },
                                             ),
-                                            onChanged: (value) {
-                                              input = value;
-                                            },
-                                          ),
-                                          actions: [
-                                            IconButton(
-                                                icon: Icon(Icons.done),
-                                                onPressed: () {
-                                                  widget._std = input;
-                                                  Navigator.of(context).pop();
-                                                })
-                                          ],
-                                        ));
-                              },
-                              )
-                          ),
+                                            actions: [
+                                              IconButton(
+                                                  icon: Icon(Icons.done),
+                                                  onPressed: () {
+                                                    widget._std = input;
+                                                    Navigator.of(context).pop();
+                                                  })
+                                            ],
+                                          ));
+                                },
+                              )),
                         ),
                         Container(
                           color: Colors.white.withOpacity(0.5),
                           height: constraints.maxHeight * 0.12,
                           child: ListTile(
-                            leading: Text(
-                              'Scl/Clg:',
-                              style: TextStyle(color: Theme.of(context).primaryColor,fontWeight:FontWeight.bold)
-                            ),
-                            title: widget._school != null
-                                ? Text(widget._school)
-                                : (snapShot.data['School'] != null ? Text(snapShot.data['School']): Text('eg. K J Somaiya Jr college of Science and commerce',style: TextStyle(color:Colors.grey))),
-                            trailing: IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                String input;
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          title: Text('Standard'),
-                                          content: TextFormField(
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                  'Enter your School/ College',
+                              leading: Text('Scl/Clg:',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold)),
+                              title: widget._school != null
+                                  ? Text(widget._school)
+                                  : (snapShot.data['School'] != null
+                                      ? Text(snapShot.data['School'])
+                                      : Text(
+                                          'eg. K J Somaiya Jr college of Science and commerce',
+                                          style:
+                                              TextStyle(color: Colors.grey))),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  String input;
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                            title: Text('Standard'),
+                                            content: TextFormField(
+                                              decoration: InputDecoration(
+                                                hintText:
+                                                    'Enter your School/ College',
+                                              ),
+                                              onChanged: (value) {
+                                                input = value;
+                                              },
                                             ),
-                                            onChanged: (value) {
-                                              input = value;
-                                            },
-                                          ),
-                                          actions: [
-                                            IconButton(
-                                                icon: Icon(Icons.done),
-                                                onPressed: () {
-                                                  widget._school = input;
-                                                  Navigator.of(context).pop();
-                                                })
-                                          ],
-                                        ));
-                              },
-                            )
-                          ),
+                                            actions: [
+                                              IconButton(
+                                                  icon: Icon(Icons.done),
+                                                  onPressed: () {
+                                                    widget._school = input;
+                                                    Navigator.of(context).pop();
+                                                  })
+                                            ],
+                                          ));
+                                },
+                              )),
                         ),
                         Container(
                           color: Colors.white.withOpacity(0.5),
                           height: constraints.maxHeight * 0.2,
                           child: ListTile(
-                            leading: Text(
-                              'About:',
-                              style: TextStyle(color: Theme.of(context).primaryColor,fontWeight:FontWeight.bold)
-                            ),
-                            title: widget._about != null
-                                ? Text(widget._about)
-                                : (snapShot.data['About'] != null ? Text(snapShot.data['About']): Text('Type Something about you :)',style: TextStyle(color:Colors.grey))),
-                            trailing: IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () 
-                              {
-                                String input;
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          title: Text('About'),
-                                          content: TextFormField(
-                                            keyboardType: TextInputType.multiline,
-                                            maxLines: 5,
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                'Type something About you :)',
+                              leading: Text('About:',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold)),
+                              title: widget._about != null
+                                  ? Text(widget._about)
+                                  : (snapShot.data['About'] != null
+                                      ? Text(snapShot.data['About'])
+                                      : Text('Type Something about you :)',
+                                          style:
+                                              TextStyle(color: Colors.grey))),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  String input;
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                            title: Text('About'),
+                                            content: TextFormField(
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: 5,
+                                              decoration: InputDecoration(
+                                                hintText:
+                                                    'Type something About you :)',
+                                              ),
+                                              onChanged: (value) {
+                                                input = value;
+                                              },
                                             ),
-                                            onChanged: (value) {
-                                             input = value;
-                                            },
-                                          ),
-                                          actions: [
-                                            IconButton(
-                                                icon: Icon(Icons.done),
-                                                onPressed: () {
-                                                   widget._about  = input;
-                                                  Navigator.of(context).pop();
-                                                })
-                                          ],
-                                        ));
-                              },
-                            )
-                          ),
+                                            actions: [
+                                              IconButton(
+                                                  icon: Icon(Icons.done),
+                                                  onPressed: () {
+                                                    widget._about = input;
+                                                    Navigator.of(context).pop();
+                                                  })
+                                            ],
+                                          ));
+                                },
+                              )),
                         ),
                       ],
                     );
@@ -362,4 +385,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 }
-

@@ -10,10 +10,10 @@ class QuizPage extends StatefulWidget {
   final String userName;
 
   int flag;
-  int  positiveCount;
-  int  negativeCount;
+  int positiveCount;
+  int negativeCount;
 
-  QuizPage(this.userId, this.quizCode,this.userName) {
+  QuizPage(this.userId, this.quizCode, this.userName) {
     this.flag = 0;
     this.positiveCount = 0;
     this.negativeCount = 0;
@@ -24,29 +24,32 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-
-  void submit() async{
-    for (int i = 0; i < answers.length; i++){
-
-      if(choosenOption[i] != null){
-        if(choosenOption[i] == answers[i])
-        {
+  void submit() async {
+    for (int i = 0; i < answers.length; i++) {
+      if (choosenOption[i] != null) {
+        if (choosenOption[i] == answers[i]) {
           widget.positiveCount++;
-        }
-        else{
+        } else {
           widget.negativeCount++;
         }
       }
     }
 
-    await FirebaseFirestore.instance.collection('Quiz').doc('${widget.quizCode}').update({
-      'AttemptedBy': FieldValue.arrayUnion([{'${widget.userName}': (widget.positiveCount / choosenOption.length) * 100 }])
+    await FirebaseFirestore.instance
+        .collection('Quiz')
+        .doc('${widget.quizCode}')
+        .update({
+      'AttemptedBy': FieldValue.arrayUnion([
+        {
+          '${widget.userName}':
+              (widget.positiveCount / choosenOption.length) * 100
+        }
+      ])
     });
 
     setState(() {
       widget.flag = 1;
     });
-
   }
 
   Future<void> loadData(AsyncSnapshot<dynamic> snapshot) async {
@@ -102,7 +105,7 @@ class _QuizPageState extends State<QuizPage> {
                       child: widget.flag <= 1
                           ? widget.flag == 0
                               ? Center(
-                                  child: RaisedButton(
+                                  child: ElevatedButton(
                                       child: Text('Start Quiz'),
                                       onPressed: () {
                                         setState(() {
@@ -111,28 +114,52 @@ class _QuizPageState extends State<QuizPage> {
                                       }))
                               : Center(
                                   child: SizedBox(
-                                    height: constraints.maxHeight * 0.4,
-                                    width: constraints.maxWidth * 0.8,
-                                    child: Card(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      height: constraints.maxHeight * 0.4,
+                                      width: constraints.maxWidth * 0.8,
+                                      child: Card(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Text('Score Board',style: TextStyle(fontSize: 40,color: Theme.of(context).primaryColor)),
-                                          Text('Right: ${widget.positiveCount}',style: TextStyle(fontSize: 20,color: Colors.green)),
-                                          Text('Wrong: ${widget.negativeCount} ',style: TextStyle(fontSize: 20,color: Colors.red)),
-                                          Text('Not Attempted: ${choosenOption.length - (widget.positiveCount+widget.negativeCount)}',style: TextStyle(fontSize: 20,color: Colors.cyan)),
+                                          Text('Score Board',
+                                              style: TextStyle(
+                                                  fontSize: 40,
+                                                  color: Theme.of(context)
+                                                      .primaryColor)),
+                                          Text('Right: ${widget.positiveCount}',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.green)),
+                                          Text(
+                                              'Wrong: ${widget.negativeCount} ',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.red)),
+                                          Text(
+                                              'Not Attempted: ${choosenOption.length - (widget.positiveCount + widget.negativeCount)}',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.cyan)),
                                           TextButton(
-                                            child: Text('Analyse',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,decoration: TextDecoration.underline,color: Theme.of(context).primaryColor)),
-                                            onPressed:(){
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (context)=>Analyse(),fullscreenDialog: true));
-                                            }
-                                          )
+                                              child: Text('Analyse',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      color: Theme.of(context)
+                                                          .primaryColor)),
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Analyse(),
+                                                        fullscreenDialog:
+                                                            true));
+                                              })
                                         ],
-                                      )
-                                    )
-                                    )
-                                )
+                                      ))))
                           : ListView.builder(
                               itemCount: questions.length,
                               itemBuilder: (context, index) {
@@ -142,11 +169,10 @@ class _QuizPageState extends State<QuizPage> {
                     height: constraints.maxHeight * 0.05,
                     width: constraints.maxWidth,
                     alignment: Alignment.center,
-                    child:
-                        RaisedButton(
-                          child: Text('Submit'),
-                          onPressed: ()=>submit(),                        
-                        ),
+                    child: ElevatedButton(
+                      child: Text('Submit'),
+                      onPressed: () => submit(),
+                    ),
                   )
                 ],
               );
